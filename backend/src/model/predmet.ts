@@ -1,0 +1,70 @@
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
+let Predmet = new Schema({
+    _id:{
+        type:Object
+    },
+    sifra:{
+        type:String
+    },
+    fond:{
+        type:String
+    },
+    bodovi:{
+        type:Number
+    },
+    tip:{
+        type:String
+    },
+    odsek:{
+        type:String
+    },
+    semestar:{
+        type:Number
+    },
+    godina:{
+        type:Number
+    },
+    naziv:{
+        type:String
+    },
+    cilj:{
+        type:String
+    },
+    uslov:{
+        type:String
+    },
+    materijali:{
+        type:Array
+    },
+    laboratorija:{
+        type:String
+    },
+    projekat:{
+        type:Object
+    },
+    komentar:{
+        type:Array
+    },
+    grupa:{
+        type:Array
+    },
+    angazovani:{
+        type:Array
+    },
+    studenti:{
+        type:Array
+    },
+    lab_sakriven:{
+        type:String
+    },
+    rokovi_sakriven:{
+        type:String
+    },
+    projekat_sakriven:{
+        type:String
+    }
+})
+
+export default mongoose.model('Predmet', Predmet, 'predmeti');
