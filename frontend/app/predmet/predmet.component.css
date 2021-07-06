@@ -1,0 +1,93 @@
+.breadCrumbs{
+    font-size: 17px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgb(255, 235, 183)
+}
+
+a{
+    font-family:'Montserrat';    
+    font-weight: bold;
+    color:rgba(0, 0, 0, 0.808);
+}
+
+.naslovPredmeta{
+    font-size: 28px;
+    font-family:'Montserrat';    
+    font-weight: bold;
+}
+
+naslovPredmeta{
+    font-size: 23px;
+    font-family:'Montserrat';    
+}
+
+table {
+    width: 100%;
+}
+
+.mat-tab-group {
+    margin-bottom: 48px;
+}
+
+.proba{
+    justify-content: center;
+}
+
+.cilj{
+    display:flex;
+}
+
+.example-small-box, .example-large-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+ 
+  .example-small-box {
+    
+    width: 1050px;
+  }
+  
+  .example-large-box {
+    
+    width: 1050px;
+  }
+
+.btn_green{
+    background-color: rgb(28, 187, 36);
+    color:white;
+    display:flex;
+    justify-content: center;
+}
+
+.btn_red{
+    background-color: rgb(187, 28, 28);
+    color:white;
+    display:flex;
+    justify-content: center;
+}
+
+
+.newsTitle{
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    font-family:'Montserrat';
+}
+
+.newsTitle1{
+    font-size: 15px;
+    font-family:'Montserrat';
+    font-weight: bold;
+}
+
+.newsTitle2{
+    font-size: 14px;
+    font-family:'Montserrat';
+    font-weight: bold;
+   
+}

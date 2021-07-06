@@ -1,0 +1,75 @@
+<div *ngIf = '!promena_lozinke'>
+    <p class='newsTitle'>Registracija</p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>GGGG/BBBB</mat-label>
+            <input matInput placeholder="Unesite indeks" [(ngModel)]='student.indeks' required>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Indeks</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>d/m/p</mat-label>
+            <input matInput placeholder="Tip studija" [(ngModel)]='student.tip_studija' required>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Tip studija</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Unesite Vaše ime...</mat-label>
+            <input matInput placeholder="Unesite ime" [(ngModel)]='student.ime' required>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Ime</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Unesite Vaše prezime...</mat-label>
+            <input matInput placeholder="Unesite prezime" [(ngModel)]='student.prezime' required>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Prezime</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <button mat-button class='registerButton' (click)="registracija()"> Registruj se</button> 
+    </p>
+</div>
+<div *ngIf='promena_lozinke'>
+    <p class='newsTitle'>Promena lozinke:</p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Unesite staru lozinku...</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]='stara_lozinka' required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint>Lozinka</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Unesite novu lozinku...</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]='nova_lozinka1' required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint>Lozinka</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Ponovite lozinku...</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]='nova_lozinka2' required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint>Lozinka</mat-hint>
+        </mat-form-field>
+    </p>
+    <p>
+        <button mat-button class='registerButton' (click)="promeniLozinku()"> Promeni lozinku</button> 
+    </p>
+    <p>{{poruka_lozinka}}</p>
+</div>

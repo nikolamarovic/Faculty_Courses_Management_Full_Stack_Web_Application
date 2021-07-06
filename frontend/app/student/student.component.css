@@ -1,0 +1,59 @@
+.breadCrumbs{
+    font-size: 17px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgb(255, 235, 183)
+}
+
+.zaposlenTabela{
+    font-family:'Montserrat';
+    color:rgb(255, 235, 183)
+}
+.fontVeci{
+    font-size: 20px;
+}
+
+.fontManji{
+    font-size: 15px;
+}
+
+.predmetiNaslov{
+    font-size: 25px;
+    font-family:'Montserrat';
+    font-weight: 800;
+}
+
+.boldFont{
+    font-weight: bold;
+}
+
+.odjava{
+    font-size: 17px;
+    font-weight: bold;
+    font-family:'Montserrat';
+    color:rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    text-align: center
+}
+
+.predmetiPozadina{
+    background-color:rgba(255, 255, 255, 0.904);
+}
+
+.semestarNaslov{
+    font-size: 20px;
+    font-family:'Montserrat';
+    font-weight: 400;
+    color:rgba(141, 141, 141, 0.712);
+}
+
+.godinaTab{
+    height:30px;
+    font-size: 25px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgba(0, 0, 0, 0.712);
+    display:flex;
+    justify-content: center;
+}

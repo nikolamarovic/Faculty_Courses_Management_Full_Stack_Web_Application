@@ -1,0 +1,41 @@
+.breadCrumbs{
+    font-size: 17px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgb(255, 235, 183)
+}
+
+table {
+    width: 100%;
+    color:rgb(255, 235, 183);
+}
+
+th{
+    font-weight: 470;
+}
+
+.izmedjuToolbar{
+    height: 10px;
+    background-color:rgba(255, 255, 255, 0);
+}
+
+.predmetiPozadina{
+    background-color:rgba(255, 255, 255, 0.904);
+}
+
+.semestarNaslov{
+    font-size: 20px;
+    font-family:'Montserrat';
+    font-weight: 600;
+    color:rgba(141, 141, 141, 0.712);
+}
+
+.godinaTab{
+    height:30px;
+    font-size: 25px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgba(0, 0, 0, 0.712);
+    display:flex;
+    justify-content: center;
+}

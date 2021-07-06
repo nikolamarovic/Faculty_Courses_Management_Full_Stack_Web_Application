@@ -1,0 +1,24 @@
+<div class='mainMenu' color="warn">
+
+    <button *ngIf='!(prikazi_zaposlen || prikazi_student || prikazi_admin)' mat-button class="mainMenuFont" routerLink="">Početna</button>
+    <button mat-button class="mainMenuFont" routerLink="/zaposleni">Zaposleni</button>
+    <button mat-button class="mainMenuFont" routerLink="/obavestenja">Obavestenja</button>
+    <button mat-button class="mainMenuFont" [matMenuTriggerFor]="osnovne">Osnovne studije</button>
+    <mat-menu #osnovne="matMenu">
+        <button class="mainSubMenuFont" mat-menu-item>
+           <p [routerLink]="['/odsek', 'rti']">Odsek za Računarsku tehniku i informatiku</p> 
+        </button>
+        <button class="mainSubMenuFont" mat-menu-item>
+            <p [routerLink]="['/odsek', 'si']">Odsek za Softversko inženjerstvo</p>
+        </button>
+        <button class="mainSubMenuFont" mat-menu-item>
+            <p [routerLink]="['/odsek', 'ostali']">Ostali odseci</p>
+        </button>
+    </mat-menu>
+    <button mat-button class="mainMenuFont" routerLink="/master">Master studije</button>
+    <button mat-button class="mainMenuFont" routerLink='/projekti'>Projekti</button>
+    <button mat-button class="mainMenuFont" routerLink='/kontakt'>Kontakt</button>
+    <button *ngIf='prikazi_zaposlen' mat-button class="mainMenuFont" [routerLink]="['',this.id]">O meni</button>
+    <button *ngIf='prikazi_student' mat-button class="mainMenuFont" [routerLink]="['/student',this.id]">O meni</button>
+    <button *ngIf='prikazi_admin' mat-button class="mainMenuFont" routerLink="/admin">Admin</button>
+</div>

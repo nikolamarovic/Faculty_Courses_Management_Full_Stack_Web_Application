@@ -1,0 +1,38 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span routerLink="">Početna/</span>
+        <span [routerLink]="['/odsek', id]">Osnovne studije/</span>
+        <span [routerLink]="['/odsek', id]">{{imeOdseka}}</span>
+    </mat-card>
+    <div *ngFor='let semestar of semestri'>
+    <mat-card  class='predmetiPozadina'>
+        <mat-toolbar *ngIf='semestar % 2 == 0' class='godinaTab'>
+            <p>{{semestar/2+1}}. godina</p>
+        </mat-toolbar>
+        <p class='semestarNaslov'>{{semestar+1}}. semestar</p>
+        <table class="table table-striped table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Šifra</th>
+                    <th scope="col">Predmet</th>
+                    <th scope="col">Broj bodova</th>
+                    <th scope="col">Fond časova</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let predmet of this.predmeti[semestar+1]' >
+                    <th scope="row">{{predmet.sifra}}</th>
+                    <td>{{predmet.naziv}}</td>
+                    <td>{{predmet.bodovi}}</td>
+                    <td>{{predmet.fond}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
+    <mat-toolbar *ngIf='(semestar+1)%2==0' class='izmedjuToolbar'></mat-toolbar>
+    </div>
+</div>
+
+

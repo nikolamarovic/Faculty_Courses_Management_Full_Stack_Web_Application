@@ -1,0 +1,33 @@
+.aboutHomeTitle{
+    font-size: 28px;
+    font-family:'Montserrat';
+    font-weight:  1000px;
+}
+
+.aboutHomeText{
+    font-size: 19px;
+    font-family: bold 'Montserrat';
+}
+
+.mat-tab-group {
+    margin-bottom: 48px;
+}
+
+.example-small-box, .example-large-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .example-small-box {
+    height: 450px;
+    width: 1050px;
+  }
+  
+  .example-large-box {
+    height: 700px;
+    width: 1050px;
+  }

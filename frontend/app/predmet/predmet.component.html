@@ -1,0 +1,325 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span [routerLink]="['/student', this.student._id]">Moji predmeti/</span>
+        <span [routerLink]="['/predmet', this.predmet._id]">{{this.predmet.naziv}}</span>
+    </mat-card>
+    <mat-card>
+        <div class="naslovPredmeta">
+            <p>{{this.predmet.sifra}} - {{this.predmet.naziv}}</p>
+            <hr/>
+        </div>
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Spiskovi" color="warn" >
+                <br/>
+                <p class="newsTitle">Aktivni spiskovi:</p>
+                <mat-tab-group mat-align-tabs="center">
+                    <mat-tab label="Prijavljeni" color="warn" >
+                        <mat-card color="warn">
+                            <mat-accordion *ngFor="let s of this.spiskovi_prijavljen">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header class='newsTitle1'>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <mat-panel-title>
+                                                        {{s.naziv_spiska}}
+                                                    </mat-panel-title>
+                                                </td>
+                                                <td>
+                                                    <mat-panel-description>
+                                                        {{s.nastavnik}}
+                                                    </mat-panel-description>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </mat-expansion-panel-header>
+                                    <div  class='row newsTitle2'>
+                                        <table class='table table-hover table-striped'>
+                                            <thead>
+                                                <th>Ime</th>
+                                                <th>Mesto</th>
+                                                <th>Vreme</th>
+                                                <th>Prijavljeni</th>
+                                                <th>Limit</th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor='let g of s.grupe;index as i_grupe'>
+                                                    <td>{{g.ime}}</td>
+                                                    <td>{{g.mesto_odrzavanja}}</td>
+                                                    <td>{{g.vreme_odrzavanja_string}}</td>
+                                                    <td>{{g.broj_prijavljenih}}</td>
+                                                    <td>{{g.limit}}</td>
+                                                    <td *ngIf='g.limit>g.broj_prijavljenih'>
+                                                        <span *ngFor='let s2 of student.spiskovi'>
+                                                            
+                                                            <button *ngIf='s2.grupa_id==g.id && s._id == s2.spisak_id' mat-button class='btn_red' (click)='odjaviSaSpiska(s._id, i_grupe)'>Odjavi</button>
+                                                        </span>
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </mat-expansion-panel>
+                                <hr/>
+                            </mat-accordion>
+                        </mat-card>        
+                    </mat-tab>
+                    <mat-tab label="Neprijavljeni" color="warn" >
+                        <mat-card color="warn">
+                            <mat-accordion *ngFor="let s of this.spiskovi_neprijavljen">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header class='newsTitle1'>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <mat-panel-title>
+                                                        {{s.naziv_spiska}}
+                                                    </mat-panel-title>
+                                                </td>
+                                                <td>
+                                                    <mat-panel-description>
+                                                        {{s.nastavnik}}
+                                                    </mat-panel-description>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </mat-expansion-panel-header>
+                                    <div  class='row newsTitle2'>
+                                        <table class='table table-hover table-striped'>
+                                            <thead>
+                                                <th>Ime</th>
+                                                <th>Mesto</th>
+                                                <th>Vreme</th>
+                                                <th>Prijavljeni</th>
+                                                <th>Limit</th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor='let g of s.grupe;index as i_grupe'>
+                                                    <td>{{g.ime}}</td>
+                                                    <td>{{g.mesto_odrzavanja}}</td>
+                                                    <td>{{g.vreme_odrzavanja_string}}</td>
+                                                    <td>{{g.broj_prijavljenih}}</td>
+                                                    <td>{{g.limit}}</td>
+                                                    <td>
+                                                        <button mat-button  class='btn_green' (click)='dodajNaSpisak(s._id, i_grupe)'>Dodaj me</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                </mat-expansion-panel>
+                                <hr/>
+                            </mat-accordion>
+                        </mat-card> 
+                    </mat-tab>        
+                </mat-tab-group>
+            </mat-tab>
+            <mat-tab label="Obaveštenja o predmetu" color="warn" >
+                <mat-card color="warn">
+                    <p class="newsTitle">Obaveštenja:</p>
+                    <hr/>
+                    <p class='newsTitle1' *ngIf='this.vesti.length == 0'>Još uvek ne postoje nikakva obaveštenja.</p>
+                    <mat-accordion *ngFor="let v of this.vesti">
+                        <mat-expansion-panel hideToggle class='newsTitle2'>
+                            <mat-expansion-panel-header class='newsTitle1'>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <mat-panel-title>
+                                                {{v.naslov_vesti}}
+                                            </mat-panel-title>
+                                         </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                {{v.nastavnik}}
+                                            </mat-panel-description>
+                                        </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                {{v.datum_string}}
+                                            </mat-panel-description>
+                                        </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                <button mat-button (click)='preuzmiFajl(v.fajl)'>Preuzmi</button>
+                                            </mat-panel-description>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </mat-expansion-panel-header>
+                            <mat-panel-description class='newsTitle2'>
+                                {{v.tekst_vesti}}
+                            </mat-panel-description>
+                        </mat-expansion-panel>
+                        <hr/>
+                    </mat-accordion>
+                </mat-card>
+            </mat-tab>
+            <mat-tab label="Informacije o predmetu" color="warn">   
+                <table class="table table-striped table-hover">
+                        <tr>
+                            <th scope="col">Tip</th>
+                            <td>{{predmet.tip}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Godina</th>
+                            <td>{{predmet.godina}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Semestar</th>
+                            <td>{{predmet.semestar}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Odsek</th>
+                            <td>{{predmet.odsek}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Fond</th>
+                            <td>{{predmet.fond}}</td>
+                        </tr>
+                        <tr>
+                            <th>Cilj</th>
+                            <td>{{predmet.cilj}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Nastava</th>
+                            <td>
+                                <div *ngFor="let grupa of predmet.grupa">
+                                    <p>{{grupa.ime_grupe}}</p>
+                                    <p>{{grupa.termin}}</p>
+                                    <p *ngFor="let n of grupa.angazovani">
+                                        <a href="" (click)="preusmeriNaKorisnika(n.kor_ime)">{{n.ime}} {{n.prezime}}</a>
+                                    </p>
+                                    <hr/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class='proba'>Uslov</th>
+                            <td>{{predmet.uslov}}</td>
+                        </tr>
+                        
+                </table>
+            
+            </mat-tab>
+            <mat-tab label="Predavanja" color="warn">
+                <mat-card>
+                    <p class='naslovPredmeta'>Materijal sa predavanja </p>
+                    <p *ngIf='this.materijali_predavanja.length == 0' class='naslovPredmeta1'>Ne postoje materijali za predavanja.</p>
+                    <table *ngIf='this.materijali_predavanja.length > 0' class="table table-striped table-hover">
+                        <tbody>
+                            <tr *ngFor='let m of this.materijali_predavanja'>
+                                <th scope="scope">
+                                    {{m.naslov}}
+                                </th>
+                                <th>
+                                    [{{m.tip_fajla}}]
+                                </th>
+                                <th>
+                                    <button class='btn btn-succes' (click)='preuzmiFajl(m.ime_fajla_upload)'>Preuzmi</button>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card>
+            </mat-tab>
+            <mat-tab label="Vežbe" color="warn">
+                <mat-card>
+                    <p class='naslovPredmeta'>Materijal sa vežbi </p>
+                    <p *ngIf='this.materijali_vezbe.length == 0' class='naslovPredmeta1'>Ne postoje materijali za vežbe.</p>
+                    <table *ngIf='this.materijali_vezbe.length > 0' class="table table-striped table-hover">
+                        <tbody>
+                            <tr *ngFor='let m of this.materijali_vezbe'>
+                                <th scope="scope">
+                                    {{m.naslov}}
+                                </th>
+                                <th>
+                                    [{{m.tip_fajla}}]
+                                </th>
+                                <th>
+                                    <button class='btn btn-succes' (click)='preuzmiFajl(m.ime_fajla_upload)'>Preuzmi</button>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card> 
+            </mat-tab>
+            <mat-tab *ngIf="this.predmet.rokovi_sakriven =='false'" label="Ispitna pitanja" color="warn">
+                <mat-card>
+                    <p class='naslovPredmeta'>Prethodni rokovi</p>
+                    <p *ngIf='this.materijali_rokovi.length == 0' class='naslovPredmeta1'>Ne postoje materijali za prethodne rokove.</p>
+                    <table *ngIf='this.materijali_rokovi.length > 0' class="table table-striped table-hover">
+                        <tbody>
+                            <tr *ngFor='let m of this.materijali_rokovi'>
+                                <th scope="scope">
+                                    {{m.naslov}}
+                                </th>
+                                <th>
+                                    [{{m.tip_fajla}}]
+                                </th>
+                                <th>
+                                    <button class='btn btn-succes' (click)='preuzmiFajl(m.ime_fajla_upload)'>Preuzmi</button>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card> 
+            </mat-tab>
+            <mat-tab *ngIf="this.predmet.lab_sakriven =='false'" label="Laboratorija" color="warn">
+                <mat-card>
+                    <p class='naslovPredmeta'>Laboratorijske vežbe</p>
+                    <p *ngIf='this.materijali_lab.length == 0' class='naslovPredmeta1'>Ne postoje materijali za laboratorijske vežbe.</p>
+                    <table *ngIf='this.materijali_lab.length > 0' class="table table-striped table-hover">
+                        <tbody>
+                            <tr *ngFor='let m of this.materijali_lab'>
+                                <th scope="scope">
+                                    {{m.naslov}}
+                                </th>
+                                <th>
+                                    {{m.tekst}}
+                                </th>
+                                <th>
+                                    [{{m.tip_fajla}}]
+                                </th>
+                                <th>
+                                    <button class='btn btn-succes' (click)='preuzmiFajl(m.ime_fajla_upload)'>Preuzmi</button>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card>
+            </mat-tab>
+            <mat-tab *ngIf="this.predmet.projekat_sakriven =='false'" label="Projekat" color="warn">
+                <mat-card>
+                    <p class='naslovPredmeta'>Projekat</p>
+                    <p *ngIf='this.materijali_projekat.length == 0' class='naslovPredmeta1'>Ne postoje materijali za projekat.</p>
+                    <table *ngIf='this.materijali_projekat.length > 0' class="table table-striped table-hover">
+                        <tbody>
+                            <tr *ngFor='let m of this.materijali_projekat'>
+                                <th scope="scope">
+                                    {{m.naslov}}
+                                </th>
+                                <th>
+                                    {{m.tekst}}
+                                </th>
+                                <th>
+                                    [{{m.tip_fajla}}]
+                                </th>
+                                <td>
+                                    <button class='btn btn-succes' (click)='preuzmiFajl(m.ime_fajla_upload)'>Preuzmi</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</div>
+

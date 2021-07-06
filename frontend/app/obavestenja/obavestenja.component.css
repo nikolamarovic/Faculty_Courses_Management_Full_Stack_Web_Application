@@ -1,0 +1,26 @@
+.newsTitle{
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    font-family:'Montserrat';
+}
+
+.newsTitle1{
+    font-size: 15px;
+    font-family:'Montserrat';
+    font-weight: bold;
+}
+
+.newsTitle2{
+    font-size: 14px;
+    font-family:'Montserrat';
+    font-weight: bold;
+   
+}
+
+.breadCrumbs{
+    font-size: 17px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgb(255, 235, 183)
+}

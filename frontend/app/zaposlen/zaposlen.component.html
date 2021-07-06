@@ -1,0 +1,54 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span routerLink="/">Početna/</span>
+        <span routerLink="/zaposleni">Zaposleni/</span>
+        <span [routerLink]="['/zaposlen',this.id]">{{this.zaposlen.ime}} {{this.zaposlen.prezime}}</span>
+    </mat-card>
+    <mat-card>
+        <mat-grid-list cols="4" rowHeight="3:3">
+            <mat-grid-tile [colspan]='1' [rowspan]='1'>
+                <img src='../../assets/{{zaposlen.slika}}' width='200px' height='250px'>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]='3' [rowspan]='1'>
+                <table class='table table-hover table-dark zaposlenTabela'>
+                    <tr>
+                        <td class='fontVeci boldFont'>{{this.zaposlen.ime}} {{this.zaposlen.prezime}}</td>
+                    </tr>
+                    <tr>
+                        <td class='fontManji'>Zvanje: {{this.zaposlen.zvanje}}</td>
+                    </tr>
+                    <tr>
+                        <td class='fontManji'>Mejl: {{this.zaposlen.mejl}}, Broj kabineta: {{this.zaposlen.broj_kabineta}}, Telefon: {{this.zaposlen.telefon}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{this.zaposlen.biografija}}</td>
+                    </tr>
+                </table>
+            </mat-grid-tile>
+        </mat-grid-list>
+            <mat-card>
+                <p class='predmetiNaslov'>Predmeti</p>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Šifra</th>
+                            <th scope="col">Predmet</th>
+                            <th scope="col">Broj bodova</th>
+                            <th scope="col">Fond časova</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let p of predmeti">
+                            <th scope="row">{{p.sifra}}</th>
+                            <td>{{p.naziv}}</td>
+                            <td>{{p.bodovi}}</td>
+                            <td>{{p.fond}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card>
+        
+    </mat-card>
+</div>

@@ -1,0 +1,49 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span routerLink="">Početna/</span>
+        <span routerLink="/master">Master studije/</span>
+    </mat-card>
+    <mat-card> 
+        <mat-tab-group mat-align-tabs="center" >
+            <mat-tab label="Master studije - predmeti" color="warn">
+                <mat-card  class='predmetiPozadina'>
+                    <mat-toolbar  class='godinaTab'>
+                        <p>Predmeti na master studijama</p>
+                    </mat-toolbar>
+                    <table class="table table-striped table-hover table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Šifra</th>
+                                <th scope="col">Predmet</th>
+                                <th scope="col">Broj bodova</th>
+                                <th scope="col">Fond časova</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">13M111S</th>
+                                <td>Evolucija softvera</td>
+                                <td>6</td>
+                                <td>3+1+1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13M111PKI</th>
+                                <td>Programiranje korisničkih interfejsa</td>
+                                <td>6</td>
+                                <td>3+1+1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13M111RG2</th>
+                                <td>Računarska grafika 2</td>
+                                <td>6</td>
+                                <td>3+1+1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</div>

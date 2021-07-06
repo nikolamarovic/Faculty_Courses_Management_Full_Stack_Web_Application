@@ -1,0 +1,42 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span routerLink="">Početna/</span>
+        <span routerLink="obavestenja">Obaveštenja</span>
+    </mat-card>
+</div>
+<div class='container'>
+    <mat-card color="warn">
+        <p class="newsTitle">Obaveštenja:</p>
+        <mat-accordion *ngFor="let o of this.obavestenja">
+            <mat-expansion-panel hideToggle class='newsTitle2'>
+                <mat-expansion-panel-header class='newsTitle1'>
+                    <table>
+                        <tr>
+                            <td>
+                                <mat-panel-title>
+                                    {{o.naslov}}
+                                </mat-panel-title>
+                             </td>
+                            <td>
+                                <mat-panel-description>
+                                    {{o.kategorija}}
+                                </mat-panel-description>
+                            </td>
+                            <td>
+                                <mat-panel-description>
+                                    {{o.datum.getDay()}}/{{o.datum.getMonth()+1}}/{{o.datum.getFullYear()}}
+                                </mat-panel-description>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-expansion-panel-header>
+                <mat-panel-description class='newsTitle2'>
+                    {{o.tekst}}
+                </mat-panel-description>
+            </mat-expansion-panel>
+            <hr/>
+        </mat-accordion>
+    </mat-card>
+</div>

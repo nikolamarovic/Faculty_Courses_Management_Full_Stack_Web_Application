@@ -1,0 +1,29 @@
+.breadCrumbs{
+    font-size: 17px;
+    font-family:'Montserrat';
+    background-color:rgba(255, 255, 255, 0);
+    color:rgb(255, 235, 183)
+}
+
+table {
+    width: 100%;
+}
+  
+td, th {
+    width: 25%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.tabelaZaposleni{
+    font-size: 14px;
+    font-family:'Montserrat';
+    font-weight: bold;  
+}
+
+.valign{
+    vertical-align: middle;
+}

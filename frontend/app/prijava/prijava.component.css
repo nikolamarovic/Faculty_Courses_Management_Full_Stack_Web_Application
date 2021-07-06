@@ -1,0 +1,19 @@
+.loginForm{
+    display:flex;
+    justify-content: center;
+}
+
+.loginButton{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(2, 2, 200, 0.671);
+    color:rgb(255, 255, 136);
+}
+
+.newsTitle{
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    font-family:'Montserrat';
+}

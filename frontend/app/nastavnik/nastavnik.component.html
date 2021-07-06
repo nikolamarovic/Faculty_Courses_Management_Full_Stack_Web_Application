@@ -1,0 +1,694 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span [routerLink]="['/', this.nastavnik._id]">Profil: {{this.nastavnik.ime}} {{this.nastavnik.prezime}}</span> 
+    </mat-card>
+    <mat-card>
+        <mat-tab-group mat-align-tabs="center" [selectedIndex]="selected.value">
+            <mat-tab *ngIf='this.predmeti.length>0' label="Predmeti" color="warn">
+                <mat-card>
+                    <mat-toolbar class='godinaTab1'>
+                        <p>Podešavanje predmeta</p>
+                    </mat-toolbar>
+                    <hr/>
+                    <p class='naslov_za_formu_predmet'>Izaberite predmet:</p>
+                    <mat-form-field class='naslov'>
+                        <mat-label>Izaberite predmet</mat-label>
+                        <mat-select (selectionChange)="this.dohvatiIzabraniPredmet($event.value)">
+                            <mat-option  [value]="" selected></mat-option>
+                            <mat-option *ngFor='let predmet of predmeti' [value]=predmet.sifra>{{predmet.sifra}}, {{predmet.naziv}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card>
+                <mat-card *ngIf='this.izabran_predmet.sifra != undefined' >
+                    <hr/>
+                    <mat-tab-group mat-align-tabs="center" [selectedIndex]="selected.value">
+                        <mat-tab label="Predmeti" color="warn">
+                            <table class='table forma_predmeti table-hover table-striped'>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Bodovi:
+                                            <mat-form-field>
+                                                <input [(ngModel)]="forma_bodovi" matInput placeholder="ESPB">
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            Status predmeta:
+                                            <mat-form-field>
+                                                <mat-select [(ngModel)]="forma_status">
+                                                  <mat-option value="obavezan">obavezan</mat-option>
+                                                  <mat-option value="izborni">izborni</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            Šifra predmeta:
+                                            <mat-form-field>
+                                                <input [(ngModel)]="forma_sifra" matInput >
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            Uslov:
+                                            <mat-form-field>
+                                                <mat-label>Izmenite uslov predmeta.</mat-label>
+                                                <textarea [(ngModel)]="forma_uslov" matInput></textarea>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            Cilj:
+                                            <mat-form-field>
+                                                <mat-label>Izmenite cilj predmeta.</mat-label>
+                                                <textarea [(ngModel)]="forma_cilj" matInput></textarea>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class='dugme_za_potvrdu_predmet'>
+                                <button class='btn btn-success' (click)="izmeniKorisnik()">Potvrdi izmene</button>
+                            </div>
+                            <p class="poruka">{{this.poruka}}</p>
+                        </mat-tab>
+                        <mat-tab label="Predavanja" color="warn">
+                            <table *ngIf='this.fajlovi_predavanja.length>0' class='table table-hover table-striped forma_fajlovi'>
+                                <tbody>
+                                    <tr>
+                                        <th>Naslov</th>
+                                        <th>Profesor</th>
+                                        <th>Tip</th>
+                                        <th>Veličina</th>
+                                        <th>Datum dodavanja</th>
+                                    </tr>
+                                    <tr *ngFor="let f of this.fajlovi_predavanja"> 
+                                        <td>
+                                            {{f.naslov}}
+                                        </td>
+                                        <td>
+                                            {{f.ime}} {{f.prezime}}
+                                        </td>
+                                        <td>
+                                            [ {{f.tip_fajla}} ]
+                                        </td>
+                                        <td>
+                                            {{f.velicina}} KB
+                                        </td>
+                                        <td>
+                                            {{f.datum_string}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf='this.fajlovi_predavanja.length==0'>
+                                <br/>
+                                <p class='forma_fajlovi'>Ne postoje fajlovi za predavanja.</p>
+                            </div>
+                            <hr/>
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <div *ngIf='uploader.queue.length>0' class="potvrda_slanje_fajla">
+                                    <button class='btn btn-success' (click)="uploadFajlove(item,'predavanja')">Pošalji fajl</button>
+                                </div>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                <mat-form-field>
+                                    <mat-label>npr Predavanja 1</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Vežbe" color="warn">
+                            <table *ngIf='this.fajlovi_vezbe.length>0' class='table table-hover table-striped forma_fajlovi'>
+                                <tbody>
+                                    <tr>
+                                        <th>Naslov</th>
+                                        <th>Profesor</th>
+                                        <th>Tip</th>
+                                        <th>Veličina</th>
+                                        <th>Datum dodavanja</th>
+                                    </tr>
+                                    <tr *ngFor="let f of this.fajlovi_vezbe"> 
+                                        <td>
+                                            {{f.naslov}}
+                                        </td>
+                                        <td>
+                                            {{f.ime}} {{f.prezime}}
+                                        </td>
+                                        <td>
+                                            [ {{f.tip_fajla}} ]
+                                        </td>
+                                        <td>
+                                            {{f.velicina}} KB
+                                        </td>
+                                        <td>
+                                            {{f.datum}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf='this.fajlovi_vezbe.length==0'>
+                                <br/>
+                                <p class='forma_fajlovi'>Ne postoje fajlovi za vežbe.</p>
+                            </div>
+                            <hr/>
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <div *ngIf='uploader.queue.length>0' class="potvrda_slanje_fajla">
+                                    <button class='btn btn-success' (click)="uploadFajlove(item,'vezbe')">Pošalji fajl</button>
+                                </div>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                Naslov fajla:
+                                <mat-form-field>
+                                    <mat-label>npr Vezbe 1</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Ispitna pitanja" color="warn">
+                            <hr/>
+                                <button class='desno' *ngIf="izabran_predmet.rokovi_sakriven =='true'" class='btn btn-success' (click)="promeniVidljivostRokovi('false')">Učini vidljivim</button> 
+                                <button class='desno' *ngIf="izabran_predmet.rokovi_sakriven =='false'" class='btn btn-danger' (click)="promeniVidljivostRokovi('true')">Sakrij za studente</button> 
+                            <hr/>
+                            <table *ngIf='this.fajlovi_rokovi.length>0' class='table table-hover table-striped forma_fajlovi'>
+                                <tbody>
+                                    <tr>
+                                        <th>Naslov</th>
+                                        <th>Profesor</th>
+                                        <th>Tip</th>
+                                        <th>Veličina</th>
+                                        <th>Datum dodavanja</th>
+                                    </tr>
+                                    <tr *ngFor="let f of this.fajlovi_rokovi"> 
+                                        <td>
+                                            {{f.naslov}}
+                                        </td>
+                                        <td>
+                                            {{f.ime}} {{f.prezime}}
+                                        </td>
+                                        <td>
+                                            [ {{f.tip_fajla}} ]
+                                        </td>
+                                        <td>
+                                            {{f.velicina}} KB
+                                        </td>
+                                        <td>
+                                            {{f.datum}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf='this.fajlovi_rokovi.length==0'>
+                                <br/>
+                                <p class='forma_fajlovi'>Ne postoje fajlovi za rokove.</p>
+                            </div>
+                            <hr/>
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <div *ngIf='uploader.queue.length>0' class="potvrda_slanje_fajla">
+                                    <button class='btn btn-success' (click)="uploadFajlove(item,'rokovi')">Pošalji fajl</button>
+                                </div>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                <mat-form-field>
+                                    <mat-label>npr Februar 2021</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Laboratorija" color="warn">
+                            <hr/>
+                                <button class='desno' *ngIf="izabran_predmet.lab_sakriven =='true'" class='btn btn-success' (click)="promeniVidljivostLab('false')">Učini vidljivim</button> 
+                                <button class='desno' *ngIf="izabran_predmet.lab_sakriven =='false'" class='btn btn-danger' (click)="promeniVidljivostLab('true')">Sakrij za studente</button> 
+                            <hr/>
+                            <table *ngIf='this.fajlovi_lab.length>0' class='table table-hover table-striped forma_fajlovi'>
+                                <tbody>
+                                    <tr>
+                                        <th>Naslov</th>
+                                        <th>Tekst</th>
+                                        <th>Profesor</th>
+                                        <th>Tip</th>
+                                        <th>Veličina</th>
+                                        <th>Datum dodavanja</th>
+                                    </tr>
+                                    <tr *ngFor="let f of this.fajlovi_lab"> 
+                                        <td>
+                                            {{f.naslov}}
+                                        </td>
+                                        <td>
+                                            {{f.tekst}}
+                                        </td>
+                                        <td>
+                                            {{f.ime}} {{f.prezime}}
+                                        </td>
+                                        <td>
+                                            {{f.tip_fajla}}
+                                        </td>
+                                        <td>
+                                            {{f.velicina}} KB
+                                        </td>
+                                        <td>
+                                            {{f.datum}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf='this.fajlovi_lab.length==0'>
+                                <br/>
+                                <p class='forma_fajlovi'>Ne postoje fajlovi za laboratorijske vežbe.</p>
+                            </div>
+                            <hr/>
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <div *ngIf='uploader.queue.length>0' class="potvrda_slanje_fajla">
+                                    <button class='btn btn-success' (click)="uploadFajlove(item,'lab')">Pošalji</button>
+                                </div>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                <mat-form-field>
+                                    <mat-label>npr Februar 2021</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite tekst:</p>
+                                <mat-form-field>
+                                    <mat-label>Tekst</mat-label>
+                                    <textarea [(ngModel)]="tekst_fajla" matInput></textarea>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Projekat" color="warn">
+                            <hr/>
+                                <button class='desno' *ngIf="izabran_predmet.projekat_sakriven =='true'" class='btn btn-success' (click)="promeniVidljivostProjekat('false')">Učini vidljivim</button> 
+                                <button class='desno' *ngIf="izabran_predmet.projekat_sakriven =='false'" class='btn btn-danger' (click)="promeniVidljivostProjekat('true')">Sakrij za studente</button> 
+                            <hr/>
+                            <table *ngIf='this.fajlovi_projekat.length>0' class='table table-hover table-striped forma_fajlovi'>
+                                <tbody>
+                                    <tr>
+                                        <th>Naslov</th>
+                                        <th>Tekst</th>
+                                        <th>Profesor</th>
+                                        <th>Tip</th>
+                                        <th>Veličina</th>
+                                        <th>Datum dodavanja</th>
+                                    </tr>
+                                    <tr *ngFor="let f of this.fajlovi_projekat"> 
+                                        <td>
+                                            {{f.naslov}}
+                                        </td>
+                                        <td>
+                                            {{f.tekst}}
+                                        </td>
+                                        <td>
+                                            {{f.ime}} {{f.prezime}}
+                                        </td>
+                                        <td>
+                                            {{f.tip_fajla}}
+                                        </td>
+                                        <td>
+                                            {{f.velicina}} KB
+                                        </td>
+                                        <td>
+                                            {{f.datum}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf='this.fajlovi_projekat.length==0'>
+                                <br/>
+                                <p class='forma_fajlovi'>Ne postoje fajlovi za projekat.</p>
+                            </div>
+                            <hr/>
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <div *ngIf='uploader.queue.length>0' class="potvrda_slanje_fajla">
+                                    <button class='btn btn-success' (click)="uploadFajlove(item,'projekat')">Pošalji</button>
+                                </div>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                <mat-form-field>
+                                    <mat-label>npr Projekat za januarski/februarski rok</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite tekst:</p>
+                                <mat-form-field>
+                                    <mat-label>Tekst</mat-label>
+                                    <textarea [(ngModel)]="tekst_fajla" matInput></textarea>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card>
+            </mat-tab>
+            <mat-tab label="Profil" color="warn">
+                <mat-card>
+                    <mat-toolbar class='godinaTab1'>
+                        <p>Ažuriranje ličnih podataka</p>
+                    </mat-toolbar>
+                    <mat-toolbar class='godinaTab2'>
+                        <p>U ovom delu možete ažurirati Vaše podatke.</p>
+                    </mat-toolbar>
+                    <table class='table forma_predmeti'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Ime:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_ime" matInput placeholder="Ime">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    Prezime:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_prezime" matInput placeholder="Prezime">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    Adresa:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_adresa" matInput >
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Broj kabineta:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_kabinet" matInput placeholder="Kabinet">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    Zvanje:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_zvanje" matInput placeholder="Zvanje">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    Telefon:
+                                    <mat-form-field>
+                                        <input [(ngModel)]="forma_telefon" matInput >
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    Biografija:
+                                    <mat-form-field>
+                                        <mat-label>Izmenite Vašu biografiju</mat-label>
+                                        <textarea [(ngModel)]="forma_biografija" matInput></textarea>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class='dugme_za_potvrdu_predmet'>
+                        <button class='btn btn-success' (click)="izmeniKorisnik()">Potvrdi izmene</button>
+                    </div>
+                    <p class="poruka">{{this.poruka}}</p>
+                </mat-card>
+            </mat-tab>
+            <mat-tab *ngIf='this.predmeti.length>0' label="Vesti" color="warn" width='95%'>
+                <mat-toolbar class='godinaTab1'>
+                    <p>Ažuriranje vesti:</p>
+                </mat-toolbar>
+                <hr/>
+                <mat-tab-group mat-align-tabs="center" >
+                    <mat-tab label='Dodavanje vesti'>
+                        <p class='naslov_za_formu_predmet'>Izaberite predmet/predmete:</p>
+                        <mat-form-field class='naslov'>
+                            <mat-label>Izaberite</mat-label>
+                            <mat-select (selectionChange)="this.dodajSifrePredmetaZaVesti($event.value)" multiple required>
+                                <mat-option  [value]="" selected></mat-option>
+                                <mat-option *ngFor='let predmet of predmeti' [value]=predmet.sifra>{{predmet.sifra}}, {{predmet.naziv}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div>
+                            <p class='naslov_za_dodavanje_fajla2'>Unesite naslov vesti:</p>
+                            <mat-form-field>
+                                <mat-label>Naslov</mat-label>
+                                <input [(ngModel)]="naslov_vesti" matInput required>
+                            </mat-form-field>
+                            <p class='naslov_za_dodavanje_fajla2'>Unesite tekst vesti:</p>
+                            <mat-form-field>
+                                <mat-label>Tekst</mat-label>
+                                <textarea [(ngModel)]="tekst_vesti" matInput required></textarea>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Izaberite datum</mat-label>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="datum_vesti" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            
+                            <div>
+                                <p class='naslov_za_dodavanje_fajla1'>Dodajte fajl:</p>
+                                <p class='naslov_za_dodavanje_fajla2'>Unesite naslov fajla:</p>
+                                <mat-form-field>
+                                    <mat-label>npr Februar 2021</mat-label>
+                                    <input [(ngModel)]="naslov_fajla" matInput>
+                                </mat-form-field>
+                                <input type="file" ng2FileSelect [uploader]="uploader">
+                                <div class="row" *ngFor='let item of uploader.queue'>
+                                    <div class='col-sm-6'>
+                                        <p>{{item.file.name}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class='btn btn-danger' (click)="item.remove()">Poništi</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="potvrda_slanje_fajla">
+                                <button class='btn btn-success' (click)="dodajVestiUPredmete()">Pošalji</button>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Pregled Vaših vesti" >
+                        <table *ngIf='this.vesti_nastavnika.length > 0' class="table table-striped table-hover table-dark vesti_tabela">
+                            <thead>
+                                <tr>
+                                    <th>Naslov</th>
+                                    <th>Datum</th>
+                                    <th>Tekst</th>
+                                    <th>Predmeti</th>
+                                    <th>Preuzimanje</th>
+                                    <th>Brisanje</th>
+                                </tr>
+                                <tr *ngFor='let v of this.vesti_nastavnika' class='tabela_vesti' >
+                                    <td>{{v.naslov_vesti}}</td>
+                                    <td>{{v.datum_string}}</td>
+                                    <td>{{v.tekst_vesti}}</td>
+                                    <td>
+                                        <select>
+                                            <option *ngFor='let p of v.predmeti'>{{p.sifra}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button (click)='preuzmiFajl(v.fajl)' mat-raised-button color="primary">Preuzmite</button>
+                                    </td>
+                                    <td>
+                                        <button (click)='obrisiVest(v._id)' mat-raised-button color="warn">Brisanje</button>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                        <p class='naslov_za_formu_predmet' *ngIf='vesti_nastavnika.length == 0'>Ne postoji ni jedna vest koju ste postavili.</p>
+                    </mat-tab>
+                </mat-tab-group> 
+            </mat-tab>
+            <mat-tab *ngIf='this.predmeti.length>0' label="Spiskovi" color="warn">
+                <mat-tab-group mat-align-tabs="center" >
+                    <mat-tab label="Dodavanje spiska">
+                        <p class='naslov_za_formu_predmet'>Izaberite predmet/predmete:</p>
+                        <mat-form-field class='naslov'>
+                            <mat-label>Izaberite predmet</mat-label>
+                            <mat-select (selectionChange)="this.postaviPredmetZaSpisak($event.value)">
+                                <mat-option  [value]="" selected></mat-option>
+                                <mat-option *ngFor='let predmet of predmeti' [value]=predmet.sifra>{{predmet.sifra}}, {{predmet.naziv}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div>
+                            <p class='naslov_za_dodavanje_fajla2'>Unesite naziv spiska:</p>
+                            <mat-form-field>
+                                <mat-label>Naslov</mat-label>
+                                <input matInput [(ngModel)]='spisak_naziv'>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <p class='naslov_za_dodavanje_fajla2'>Unesite rok kada spisak ističe:</p>
+                            <input  type="date" value="" [(ngModel)]='spisak_datum2' >
+                            <input  type="time" value="" [(ngModel)]='spisak_vreme2'>
+                        </div>
+                        <div>
+                            <p class='naslov_za_dodavanje_fajla2'>Unesite broj grupa:</p>
+                            <mat-form-field>
+                                <mat-label>Broj grupa</mat-label>
+                                <input matInput [(ngModel)]='broj_termina_za_spisak'>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button *ngIf='broj_termina_za_spisak>0' mat-button (click)='izlistajTermine()'>Nastavi</button>
+                        </div>
+                        <hr/>
+                        <div *ngFor='let i of broj_grupa_za_spisak_tmp; index  as ind'>
+                            <p class='naslov_za_formu_predmet centrirano'>Grupa {{ind+1}}</p>
+                            <div class='dugme_za_potvrdu_predmet'>
+                                <table *ngIf='prikazi_dodajGrupu[ind]' class='table table-hover'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <p class='naslov_za_dodavanje_fajla2'>Unesite vreme:</p>
+                                                <input type="date" [(ngModel)]='spisak_datum_grupe' required> 
+                                                <input type="time" [(ngModel)]='spisak_vreme_grupe' required>               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class='naslov_za_dodavanje_fajla2'>Naziv grupe:</p>
+                                                <mat-form-field>
+                                                    <mat-label>G1</mat-label>
+                                                    <input matInput [(ngModel)]='spisak_ime_grupe' required>
+                                                </mat-form-field>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class='naslov_za_dodavanje_fajla2'>Unesite mesto odrzavanja:</p>
+                                                <mat-form-field>
+                                                    <mat-label>Mesto</mat-label>
+                                                    <input matInput [(ngModel)]='spisak_mesto_grupe' required>
+                                                </mat-form-field>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class='naslov_za_dodavanje_fajla2'>Unesite maksimalan maksimalan dozvoljen broj prijavljnih studenata za ovu grupu:</p>
+                                                <mat-form-field>
+                                                    <mat-label>Limit</mat-label>
+                                                    <input matInput [(ngModel)]='spisak_limit_grupe' required>
+                                                </mat-form-field>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button class='btn btn-succes dugme_spisak' (click)='dodajGrupu(ind)'>Dodajte grupu</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr/>
+                        </div>
+                        <div>
+                            <button *ngIf='broj_termina_za_spisak>0' mat-button (click)='zavrsiPravljenjeSpiska()'>Unete sve grupe</button>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Moji spiskovi">
+                        <br/>
+                        <p class='naslov_za_formu_predmet1' *ngIf='spiskovi_nastavnika.length == 0'>Ne postoji nijedan Vaš spisak.</p>
+                        <mat-card *ngIf='spiskovi_nastavnika.length > 0' color="warn">
+                            <p class='naslov_za_formu_predmet1'>Moji spiskovi</p>
+                                <table *ngFor="let s of this.spiskovi_nastavnika" class='table table-hover newsTitle1'>
+                                    <tr>
+                                        <td>
+                                            <mat-panel-title>
+                                                {{s.naziv_spiska}}
+                                            </mat-panel-title>
+                                        </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                {{s.nastavnik}}
+                                            </mat-panel-description>
+                                        </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                {{s.predmet}}
+                                            </mat-panel-description>
+                                        </td>
+                                        <td>
+                                            <mat-panel-description>
+                                                {{s.status}}
+                                            </mat-panel-description>
+                                        </td>
+                                        <td>
+                                            <button mat-button  class='btn_red' *ngIf="s.status=='aktivan'" (click)="zatvoriSpisak(s._id,'neaktivan')" >Zatvori spisak</button>
+                                            <button mat-button  class='btn_green' *ngIf="s.status=='neaktivan'" (click)="zatvoriSpisak(s._id,'aktivan')">Otvori spisak</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </mat-card>
+                    </mat-tab>
+                </mat-tab-group>
+                <!-- 
+                <input  type="date" value="" [(ngModel)]='spisak_datum1' >
+                <input  type="time" value="" [(ngModel)]='spisak_vreme1'>
+
+                <input  type="date" value="" [(ngModel)]='spisak_datum2' >
+                <input  type="time" value="" [(ngModel)]='spisak_vreme2'>
+                <button (click)="spisak()">Spisak</button> 
+                -->
+            </mat-tab>
+            <mat-tab label="Odjava" color="warn" >
+                <div >
+                    <br/>
+                    <br/>
+                    <div class='odjava'>
+                        <span>Da li sigurno želite da se odjavite?</span>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class='odjava'>
+                        <span>
+                            <button mat-raised-button color="primary" (click)='odjava()'>Da</button>
+                            <button mat-raised-button color="warn" (click)='prikaziPrvu()'>Ne</button>
+                        </span>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</div>

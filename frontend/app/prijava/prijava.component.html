@@ -1,0 +1,26 @@
+<p class='newsTitle'>Prijava</p>
+<p>
+    <mat-form-field appearance="outline">
+        <mat-label>Unesite korisničko ime...</mat-label>
+        <input matInput placeholder="Placeholder" [(ngModel)]='kor_ime'  required>
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+</p>
+<p>
+    <mat-form-field appearance="outline">
+        <mat-label>Unesite lozinku</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]='lozinka'  required>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+</p>
+<div>
+    <mat-checkbox [(ngModel)]='student' required>Kao student</mat-checkbox>
+</div>
+<p>{{poruka}}</p>
+<p>
+    <button mat-button class='loginButton' (click)="prijava()"> Uloguj se </button> 
+</p>
+
+

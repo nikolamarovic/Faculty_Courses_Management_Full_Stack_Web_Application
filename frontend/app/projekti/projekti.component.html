@@ -1,0 +1,38 @@
+<app-main-menu></app-main-menu>
+<app-carousel></app-carousel>
+<div class='container'>
+    <mat-card class='breadCrumbs'>
+        <span routerLink="">Početna/</span>
+        <span>Projekti</span>
+    </mat-card>
+</div>
+<div class='container'>
+    <mat-card color="warn">
+        <p class="newsTitle">Projekti:</p>
+        <div *ngFor='let p of projekti'>
+            <table class='table'>
+                <tr>
+                    <th>Naslov</th>
+                    <td>
+                        <p class='newsTitle2'>{{p.naslov}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tekst</th>
+                    <td>
+                        <p class='newsTitle3'>{{p.tekst}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Zaposleni</th>
+                    <td>
+                        <p *ngFor='let z of p.zaposlen' [routerLink]="['/zaposlen', z.id]">
+                            {{z.ime}} {{z.prezime}}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+        </div>
+    </mat-card>
+</div>
